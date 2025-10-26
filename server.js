@@ -7,10 +7,10 @@ app.use(express.json());
 const products = require('./data/products');
 
 app.listen(port, () => {
-    console.log('API live on ${port}')}); 
+    console.log(`API live on ${port}`)}); 
 
 app.get('/', (req, res) => {
-  res.send('Product Inventory API is running');
+  res.sendFile(__dirname + '/public/index.html');
 });
 
 app.get('/products', (req, res) => {
@@ -34,7 +34,7 @@ app.post('/products', (req, res) => {
 });
 
 app.get('/products/:id', (req, res) => {
-  const product = products.find(p => p.id == req.params.id);
+  let product = products.find(p => p.id == req.params.id);
   if (!product) return res.status(404).json({ message: 'Product not found' });
   res.json(product);
 });
