@@ -4,39 +4,20 @@ const app = express();
 const port = process.env.port;
 app.use(express.json());
 
-const products = require('./data/products');
-
-app.listen(port, () => {
-    console.log(`API live on ${port}`)}); 
+const { getAllProducts, getProductById, addProduct, delProductById} = require('./handlers/productHandlers');
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
 
-app.get('/products', (req, res) => {
-  if (products.length === 0) {
-    return res.status(404).json({
-      message: 'No products found',
-      data: []
-    });
-  }
+app.get('/products', getAllProducts);
 
-  res.status(200).json({
-    message: 'Products retrieved successfully',
-    data: products
-  });
-});
+app.get('/products/:id', getProductById); 
 
-app.post('/products', (req, res) => {
-  const newProduct = { id: Date.now(), ...req.body };
-  products.push(newProduct);
-  res.status(201).json(newProduct);
-});
+app.post('/products', addProduct);
 
-app.get('/products/:id', (req, res) => {
-  let product = products.find(p => p.id == req.params.id);
-  if (!product) return res.status(404).json({ message: 'Product not found' });
-  res.json(product);
-});
+app.delete('/products/:id', delProductById);
 
-
+// Start server
+app.listen(port, () => {
+    console.log(`API live on ${port}`)}); 

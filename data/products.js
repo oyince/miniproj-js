@@ -1,6 +1,5 @@
 // data/products.js
-// data/products.js
-const products = [
+let products = [
   {
     id: 1,
     name: "Laptop",
